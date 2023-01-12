@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public bool gameOver;
     private Rigidbody playerRb;
     private Animator playerAnim;
+    private AudioSource playerAudio;
     private bool isOnGround;
     
     //Player Input Behavior: Send Messages
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
             dirtParticle.Stop();
-            //jumpSound.Play;
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         isOnGround = true;
         Physics.gravity *= gravityModifier;
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") && !gameOver)
         {
             isOnGround = true;
             dirtParticle.Play();
@@ -64,6 +66,8 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetInteger("DeathType_int", 1);
             explosionParticle.Play();
             dirtParticle.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
+            GameObject.Find("Main Camera").GetComponent<AudioSource>().Stop();
         }
     }
 }
