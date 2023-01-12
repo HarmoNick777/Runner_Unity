@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityModifier = 1.5f;
     [SerializeField] ParticleSystem explosionParticle;
     [SerializeField] ParticleSystem dirtParticle;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip crashSound;
     public bool gameOver;
     private Rigidbody playerRb;
     private Animator playerAnim;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
             dirtParticle.Stop();
+            //jumpSound.Play;
         }
     }
 
